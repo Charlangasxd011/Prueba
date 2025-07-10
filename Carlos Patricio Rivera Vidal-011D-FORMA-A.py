@@ -12,15 +12,43 @@ stock = {'8475HD':[387990,10],'2175HD':[327990,4],'JjfFHD':[429990,1],
          '342FHD':[444990,7],'UWU131HD':[349990,1]}
 
 def stock_marca():
-    nombre_buscado = input("Ingrese marca a consultar: ")
-    for i in range(len(stock)):
-        if  stock [i][""].lower() == nombre_buscado.lower():
-            print(f"El stock es de: {stock}")
+    nombre_buscado = input("Ingrese marca a consultar: ").lower()
+    total_stock = 0
+    for codigo, detalles in productos.items():
+        marca = detalles[0].lower()
+        if marca == nombre_buscado:
+            if codigo in stock:
+                total_stock += stock[codigo][1]
+    print(f"El stock total de la marca '{nombre_buscado.capitalize()}' es: {total_stock}")
+
         
 def buscar_precio():
-    pass
+    try:
+        precio_min = int(input("Ingrese precio mínimo: "))
+        precio_max = int(input("Ingrese precio máximo: "))
+        encontrados = False
+        for codigo, datos in stock.items():
+            precio = datos[0]
+            if precio_min <= precio <= precio_max:
+                print(f"Producto {codigo} - Precio: ${precio} - Stock: {datos[1]} - Marca: {productos[codigo][0]}")
+                encontrados = True
+        if not encontrados:
+            print("No se encontraron productos en ese rango de precios.")
+    except ValueError:
+        print("Debe ingresar valores numéricos válidos.")
+
 def actualizar_precio():
-    pass
+    codigo = input("Ingrese el código del producto a actualizar: ")
+    if codigo in stock:
+        try:
+            nuevo_precio = int(input("Ingrese el nuevo precio: "))
+            stock[codigo][0] = nuevo_precio
+            print(f"Precio actualizado correctamente para el producto {codigo}.")
+        except ValueError:
+            print("Debe ingresar un número válido.")
+    else:
+        print("El código de producto no existe.")
+
 def menu():
     while True:
         try:
